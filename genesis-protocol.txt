@@ -62,8 +62,8 @@ CSS
 
  /* ===== Generic thing reset (kills default blue) ===== */
  .thing{background:none;box-shadow:none;text-align:left;}
- /* keep progressive unlocks working despite display:flex!important below */
- .hidden{display:none!important;}
+ /* keep progressive unlocks working: must out-specify the display:flex!important layout rules below */
+ .thing.hidden,#box-upgradesBox .thing.hidden,#box-techBox .thing.hidden,#box-achievementsBox .thing.hidden{display:none!important;}
 
  /* ===== Section headers ===== */
  .box-header
