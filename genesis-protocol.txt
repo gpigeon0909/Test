@@ -30,207 +30,164 @@ Settings
  building cost increase:115%
  building cost refund:50%
  stylesheet:stuff/bigBlue.css
- spritesheet:icons, 64 by 64, https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/Test/icons.png
+ spritesheet:icons, 64 by 64, https://raw.githubusercontent.com/gpigeon0909/Test/refs/heads/main/icons.png
 
 CSS
- /* ===== Deep space theme ===== */
+ /* ===== Stellar Dominion - command console ===== */
  #game
  {
- color:#dce6ff;
- font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+ color:#c6d4f2;
+ font-family:"Segoe UI",system-ui,sans-serif;
  font-size:13px;
  background:
- radial-gradient(2px 2px at 18% 22%,#ffffff,transparent),
- radial-gradient(1px 1px at 33% 67%,#cfe0ff,transparent),
- radial-gradient(2px 2px at 61% 38%,#ffffff,transparent),
- radial-gradient(1px 1px at 78% 75%,#bcd2ff,transparent),
- radial-gradient(1px 1px at 88% 14%,#ffffff,transparent),
- radial-gradient(2px 2px at 45% 88%,#e7eeff,transparent),
- radial-gradient(circle at 82% 8%,rgba(140,90,220,0.30),transparent 45%),
- radial-gradient(circle at 8% 92%,rgba(40,120,220,0.28),transparent 45%),
- radial-gradient(circle at 50% 50%,#0b1030,#05060f 80%);
+ radial-gradient(1px 1px at 18% 28%,#ffffff,transparent),
+ radial-gradient(1px 1px at 72% 62%,#bcd2ff,transparent),
+ radial-gradient(1px 1px at 44% 82%,#ffffff,transparent),
+ radial-gradient(900px 500px at 50% -15%,#16244f,transparent 70%),
+ linear-gradient(#070b1c,#04060f);
  background-attachment:fixed;
  }
 
  /* ===== Two columns ===== */
- #box-main
- {
- width:58%;
- display:flex;
- flex-direction:column;
- overflow:hidden;
- }
+ #box-main{display:flex;flex-direction:column;}
  #box-store
  {
- width:42%;
- background:rgba(8,12,30,0.55);
- border-left:1px solid rgba(120,170,255,0.18);
+ width:40%;
+ background:rgba(7,11,26,0.6);
+ border-left:1px solid rgba(120,170,255,0.14);
  overflow-y:auto;
  overflow-x:hidden;
- padding:6px 8px 56px;
+ padding:8px 10px 56px;
  }
 
- /* ===== Left column: resources / star / log ===== */
- #box-resourceBox
- {
- flex:0 0 auto;
- padding:12px 6px;
- text-align:center;
- border-bottom:1px solid rgba(120,170,255,0.15);
- }
- #box-actionBox
- {
- flex:1 1 auto;
- display:flex;
- align-items:center;
- justify-content:center;
- }
- #box-logBox
- {
- flex:0 0 auto;
- height:150px;
- margin:6px;
- padding:4px 12px;
- background:rgba(6,10,26,0.6);
- border:1px solid rgba(120,170,255,0.18);
- border-radius:10px;
- overflow-y:auto;
- text-align:left;
- }
+ /* ===== Generic thing reset (kills default blue) ===== */
+ .thing{background:none;box-shadow:none;text-align:left;}
 
- /* ===== Section headers / footers (replace the blue bars) ===== */
- .box-header,.box-footer
+ /* ===== Section headers ===== */
+ .box-header
  {
- background:none;
- box-shadow:none;
- border:none;
- border-radius:0;
- color:#9fc2ff;
- font-weight:bold;
- text-transform:uppercase;
- letter-spacing:1px;
- font-size:12px;
- padding:8px 4px 4px;
- margin:4px 4px 6px;
- border-bottom:1px solid rgba(120,170,255,0.18);
- text-align:left;
- }
- .box-footer
- {
- border-bottom:none;
- border-top:1px solid rgba(120,170,255,0.12);
- text-transform:none;
- letter-spacing:0;
- font-weight:normal;
- font-size:11px;
- color:#7f93c8;
- }
-
- /* ===== Things (cards) ===== */
- .thing
- {
- background:rgba(22,32,66,0.6);
- border:1px solid rgba(120,170,255,0.20);
- border-radius:10px;
- box-shadow:none;
- margin:4px;
- padding:8px 10px;
- vertical-align:top;
- text-align:left;
- transition:border-color 0.1s,box-shadow 0.1s,background 0.1s;
- }
- .thing:hover,.thing.lit
- {
- background:rgba(40,60,120,0.7);
- border-color:rgba(150,200,255,0.6);
- box-shadow:0 0 12px rgba(110,170,255,0.30);
- }
- .thing.cantAfford{opacity:0.5;}
- .upgrade.owned,.achiev.owned
- {
- border-color:rgba(160,255,220,0.6);
- box-shadow:0 0 10px rgba(120,255,200,0.25);
- }
-
- /* structures: full-width rows */
- .building
- {
- display:block;
- width:auto;
- margin:5px 6px;
- padding:10px 14px;
- font-size:14px;
- border-radius:10px;
- }
-
- /* upgrades / techs / achievements: tidy wrapping card grid */
- #box-upgradesBox,#box-techBox,#box-achievementsBox{text-align:left;}
- #box-upgradesBox .thing,#box-techBox .thing,#box-achievementsBox .thing
- {
- display:inline-block;
- width:150px;
- min-height:30px;
- margin:4px;
- vertical-align:top;
- }
-
- /* resources: clean inline readout in the top bar */
- .resource
- {
- display:inline-block;
  background:none!important;
- border:none!important;
  box-shadow:none!important;
- margin:2px 12px;
- padding:0;
- font-size:15px;
- color:#dce6ff;
- vertical-align:middle;
+ border:none!important;
+ border-radius:0!important;
+ color:#7fb4ff;
+ font-weight:700;
+ text-transform:uppercase;
+ letter-spacing:2px;
+ font-size:11px;
+ padding:10px 4px 6px;
+ margin:2px 0 6px;
+ border-bottom:1px solid rgba(120,170,255,0.16)!important;
  }
+ .box-header>div{position:relative;padding-left:10px;}
+ .box-header>div::before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:3px;background:#5aa0ff;border-radius:2px;}
 
- /* the main button: a glowing star, centered */
+ /* ===== Bulk selector / generic box-bit ===== */
+ .box-bit
+ {
+ background:rgba(18,28,56,0.6)!important;
+ box-shadow:none!important;
+ border:1px solid rgba(120,170,255,0.16)!important;
+ border-radius:8px!important;
+ color:#cdd9f5;
+ }
+ #bulkDisplay{margin:4px 4px 8px!important;padding:4px 10px;display:inline-block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9fc2ff;}
+
+ /* ===== Resource HUD (top bar) ===== */
+ #box-resourceBox{flex:none;padding:0 0 8px;background:rgba(6,10,24,0.55);border-bottom:1px solid rgba(120,170,255,0.18);}
+ #box-things-Resources{display:flex;flex-wrap:wrap;gap:22px;padding:12px 8px 6px;justify-content:center;align-items:center;}
+ .res{display:inline-flex!important;align-items:center;gap:2px;background:none!important;border:none!important;box-shadow:none!important;margin:0!important;padding:0!important;opacity:1!important;}
+ .res .thing-icon{width:64px;height:64px;transform:scale(0.5);margin:-16px -8px;flex:none;opacity:1!important;}
+ .res .thing-text{font-family:ui-monospace,Consolas,monospace;font-size:14px;color:#e6eeff;white-space:nowrap;opacity:1!important;}
+
+ /* ===== Scanner (main action button) ===== */
+ #box-actionBox{flex:none;display:flex;align-items:center;justify-content:center;padding:34px 0 38px;}
+ #box-things-Buttons{text-align:center;}
  .bigButton
  {
- width:150px;
- height:150px;
  border-radius:50%;
- background:radial-gradient(circle at 50% 40%,#fff6cf,#ffc15a 35%,#c2691f 68%,#3a1606);
- border:none;
- box-shadow:0 0 50px rgba(255,180,90,0.55),0 0 120px rgba(255,150,60,0.25);
+ background:radial-gradient(circle at 50% 50%,rgba(90,170,255,0.22),rgba(9,16,38,0.92) 70%)!important;
+ border:1px solid rgba(120,190,255,0.5)!important;
+ box-shadow:0 0 0 6px rgba(80,150,255,0.05),inset 0 0 22px rgba(80,160,255,0.22),0 0 18px rgba(60,140,255,0.12)!important;
+ display:flex!important;
+ align-items:center;
+ justify-content:center;
+ overflow:hidden;
  }
- .bigButton:hover{box-shadow:0 0 60px rgba(255,200,110,0.7),0 0 140px rgba(255,160,70,0.3);}
- .bigButton .thing-text{color:#3a1606;font-weight:bold;text-shadow:0 1px 0 rgba(255,240,200,0.6);}
+ .button.bigButton{position:relative!important;margin:0 auto!important;top:auto!important;bottom:auto!important;width:124px!important;height:124px!important;}
+ .bigButton:hover{box-shadow:0 0 0 6px rgba(80,150,255,0.1),inset 0 0 28px rgba(110,180,255,0.4),0 0 40px rgba(80,160,255,0.28)!important;}
+ .bigButton::before{content:"";position:absolute;inset:5px;border-radius:50%;background:conic-gradient(from 0deg,rgba(130,200,255,0.45),rgba(130,200,255,0) 28%);animation:sweep 2.8s linear infinite;}
+ .bigButton::after{content:"";position:absolute;inset:30px;border-radius:50%;border:1px solid rgba(150,205,255,0.35);box-shadow:0 0 0 20px rgba(150,205,255,0.05);}
+ .bigButton .thing-text{position:relative;z-index:2;text-align:center;text-transform:uppercase;letter-spacing:2px;font-weight:700;font-size:11px;color:#e6f1ff;text-shadow:0 0 10px rgba(90,170,255,0.9);}
+ @keyframes sweep{to{transform:rotate(360deg);}}
 
- /* tooltips */
- .tooltip
+ /* ===== Command log (terminal feed) ===== */
+ #box-logBox{flex:1 1 auto;min-height:120px;margin:8px;border:1px solid rgba(120,170,255,0.16);border-radius:10px;overflow:hidden;background:rgba(5,9,22,0.8);display:flex;flex-direction:column;}
+ #box-logBox .box-header{margin:0;padding:8px 10px;border-bottom:1px solid rgba(120,170,255,0.14)!important;}
+ #log{background:transparent!important;border:none!important;box-shadow:none!important;flex:1 1 auto;}
+ .message{border-bottom:1px solid rgba(120,170,255,0.06);}
+ .messageContent,.messageContent div{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#86d8c0;line-height:1.5;}
+
+ /* ===== Structures (building rows) ===== */
+ .building
  {
- background:rgba(10,16,40,0.97);
- border:1px solid rgba(130,180,255,0.5);
- border-radius:8px;
- color:#e6eeff;
- box-shadow:0 6px 24px rgba(0,0,0,0.6);
+ display:flex!important;
+ align-items:center;
+ gap:12px;
+ background:rgba(20,30,62,0.55)!important;
+ border:1px solid rgba(120,170,255,0.16)!important;
+ border-radius:10px!important;
+ box-shadow:none!important;
+ margin:6px 0!important;
+ padding:8px 12px!important;
  }
+ .building:hover{background:rgba(40,62,120,0.6)!important;border-color:rgba(150,200,255,0.55)!important;box-shadow:0 0 14px rgba(110,170,255,0.25)!important;}
+ .building .thing-icon{width:64px;height:64px;flex:none;}
+ .building .thing-text{flex:1;font-size:14px;font-weight:600;color:#eaf1ff;}
+ .building .thing-costs{font-family:ui-monospace,Consolas,monospace;text-align:right;}
+ .cost.hasEnough{color:#8fe39a;}
+ .cost.notEnough{color:#ff8a8a;}
+ .building.cantAfford{opacity:0.55;}
 
- /* log lines */
- .logMsg{border-bottom:1px solid rgba(120,170,255,0.08);padding:3px 0;color:#bcd0ff;}
-
- #game.filtersOn .thing.cantAfford.notOwned{filter:brightness(0.75);}
-
- @keyframes pulse
+ /* ===== Upgrades / Technologies / Milestones (tiles) ===== */
+ #box-upgradesBox .box-things,#box-techBox .box-things,#box-achievementsBox .box-things{display:flex;flex-wrap:wrap;gap:6px;padding:4px;}
+ #box-upgradesBox .thing,#box-techBox .thing,#box-achievementsBox .thing
  {
- 0%{transform:scale(1);}
- 50%{transform:scale(1.07);}
- 100%{transform:scale(1);}
+ display:flex!important;
+ flex-direction:column;
+ align-items:center;
+ justify-content:flex-start;
+ width:92px;
+ gap:4px;
+ background:rgba(20,30,62,0.55)!important;
+ border:1px solid rgba(120,170,255,0.16)!important;
+ border-radius:10px!important;
+ box-shadow:none!important;
+ margin:0!important;
+ padding:8px 6px!important;
+ text-align:center;
  }
- .pulse{animation:pulse 0.2s ease-out;}
+ #box-upgradesBox .thing:hover,#box-techBox .thing:hover,#box-achievementsBox .thing:hover{border-color:rgba(150,200,255,0.55)!important;box-shadow:0 0 12px rgba(110,170,255,0.25)!important;}
+ #box-upgradesBox .thing-text,#box-techBox .thing-text,#box-achievementsBox .thing-text{font-size:11px;color:#dbe6ff;line-height:1.2;}
+ .upgrade.owned,.achiev.owned{border-color:rgba(150,255,210,0.55)!important;box-shadow:0 0 10px rgba(120,255,200,0.22)!important;}
+ .thing-icon{flex:none;}
 
- /* the wandering comet: a cold blue-white streak */
+ /* ===== Tooltips ===== */
+ .tooltip{background:rgba(8,14,34,0.97)!important;border:1px solid rgba(130,180,255,0.5)!important;border-radius:8px!important;color:#e6eeff!important;box-shadow:0 8px 26px rgba(0,0,0,0.6)!important;}
+
+ #game.filtersOn .thing.cantAfford.notOwned{filter:brightness(0.8);}
+
+ /* ===== Wandering comet (distinct from the scanner) ===== */
  .comet
  {
- width:120px;height:120px;border-radius:50%;
- background:radial-gradient(circle at 38% 38%,#ffffff,#9fd8ff 40%,#3a7bd5 70%,#0a1f4d);
- box-shadow:0 0 40px rgba(150,210,255,0.75);
+ width:104px!important;
+ height:104px!important;
+ border-radius:50%;
+ background:radial-gradient(circle at 38% 38%,#ffffff,#9fd8ff 40%,#3a7bd5 70%,#0a1f4d)!important;
+ border:none!important;
+ box-shadow:0 0 40px rgba(150,210,255,0.75)!important;
  }
+ .comet::before,.comet::after{display:none!important;}
 
 Layout
  *main
