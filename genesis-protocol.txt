@@ -62,6 +62,8 @@ CSS
 
  /* ===== Generic thing reset (kills default blue) ===== */
  .thing{background:none;box-shadow:none;text-align:left;}
+ /* keep progressive unlocks working despite display:flex!important below */
+ .hidden{display:none!important;}
 
  /* ===== Section headers ===== */
  .box-header
@@ -147,7 +149,14 @@ CSS
  .building .thing-costs{font-family:ui-monospace,Consolas,monospace;text-align:right;}
  .cost.hasEnough{color:#8fe39a;}
  .cost.notEnough{color:#ff8a8a;}
- .building.cantAfford{opacity:0.55;}
+
+ /* ===== Disabled / unaffordable state (clearly locked) ===== */
+ .thing.cantAfford{opacity:0.45!important;filter:grayscale(0.85);cursor:not-allowed;}
+ .thing.cantAfford .thing-icon{filter:grayscale(1) brightness(0.7);}
+ .building.cantAfford{background:rgba(12,18,36,0.5)!important;border:1px dashed rgba(120,170,255,0.18)!important;box-shadow:none!important;}
+ .building.cantAfford:hover{background:rgba(12,18,36,0.5)!important;border-color:rgba(120,170,255,0.25)!important;box-shadow:none!important;}
+ #box-upgradesBox .thing.cantAfford,#box-techBox .thing.cantAfford,#box-achievementsBox .thing.cantAfford{border-style:dashed!important;}
+ #box-upgradesBox .thing.cantAfford:hover,#box-techBox .thing.cantAfford:hover{box-shadow:none!important;border-color:rgba(120,170,255,0.25)!important;}
 
  /* ===== Upgrades / Technologies / Milestones (tiles) ===== */
  #box-upgradesBox .box-things,#box-techBox .box-things,#box-achievementsBox .box-things{display:flex;flex-wrap:wrap;gap:6px;padding:4px;}
