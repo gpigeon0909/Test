@@ -30,13 +30,15 @@ Settings
  building cost increase:115%
  building cost refund:50%
  stylesheet:stuff/bigBlue.css
+ spritesheet:icons, 64 by 64, https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/Test/icons.png
 
 CSS
- /* ---- Deep space theme ---- */
+ /* ===== Deep space theme ===== */
  #game
  {
  color:#dce6ff;
  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+ font-size:13px;
  background:
  radial-gradient(2px 2px at 18% 22%,#ffffff,transparent),
  radial-gradient(1px 1px at 33% 67%,#cfe0ff,transparent),
@@ -49,54 +51,171 @@ CSS
  radial-gradient(circle at 50% 50%,#0b1030,#05060f 80%);
  background-attachment:fixed;
  }
- .title
+
+ /* ===== Two columns ===== */
+ #box-main
  {
- color:#9fd0ff;
- text-shadow:0 0 12px rgba(120,180,255,0.6);
+ width:58%;
+ display:flex;
+ flex-direction:column;
+ overflow:hidden;
  }
- /* section headers */
- .nameBox,.subButton,h3
+ #box-store
  {
- color:#a9c4ff;
+ width:42%;
+ background:rgba(8,12,30,0.55);
+ border-left:1px solid rgba(120,170,255,0.18);
+ overflow-y:auto;
+ overflow-x:hidden;
+ padding:6px 8px 56px;
  }
- /* every thing is a translucent panel with a soft cyan edge */
+
+ /* ===== Left column: resources / star / log ===== */
+ #box-resourceBox
+ {
+ flex:0 0 auto;
+ padding:12px 6px;
+ text-align:center;
+ border-bottom:1px solid rgba(120,170,255,0.15);
+ }
+ #box-actionBox
+ {
+ flex:1 1 auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ }
+ #box-logBox
+ {
+ flex:0 0 auto;
+ height:150px;
+ margin:6px;
+ padding:4px 12px;
+ background:rgba(6,10,26,0.6);
+ border:1px solid rgba(120,170,255,0.18);
+ border-radius:10px;
+ overflow-y:auto;
+ text-align:left;
+ }
+
+ /* ===== Section headers / footers (replace the blue bars) ===== */
+ .box-header,.box-footer
+ {
+ background:none;
+ box-shadow:none;
+ border:none;
+ border-radius:0;
+ color:#9fc2ff;
+ font-weight:bold;
+ text-transform:uppercase;
+ letter-spacing:1px;
+ font-size:12px;
+ padding:8px 4px 4px;
+ margin:4px 4px 6px;
+ border-bottom:1px solid rgba(120,170,255,0.18);
+ text-align:left;
+ }
+ .box-footer
+ {
+ border-bottom:none;
+ border-top:1px solid rgba(120,170,255,0.12);
+ text-transform:none;
+ letter-spacing:0;
+ font-weight:normal;
+ font-size:11px;
+ color:#7f93c8;
+ }
+
+ /* ===== Things (cards) ===== */
  .thing
  {
- background:rgba(20,30,64,0.55);
+ background:rgba(22,32,66,0.6);
  border:1px solid rgba(120,170,255,0.20);
- border-radius:8px;
- backdrop-filter:blur(2px);
+ border-radius:10px;
+ box-shadow:none;
+ margin:4px;
+ padding:8px 10px;
+ vertical-align:top;
+ text-align:left;
+ transition:border-color 0.1s,box-shadow 0.1s,background 0.1s;
  }
- .thing:hover
+ .thing:hover,.thing.lit
  {
- border-color:rgba(150,200,255,0.55);
- box-shadow:0 0 14px rgba(110,170,255,0.30);
+ background:rgba(40,60,120,0.7);
+ border-color:rgba(150,200,255,0.6);
+ box-shadow:0 0 12px rgba(110,170,255,0.30);
  }
- .thing.lit
+ .thing.cantAfford{opacity:0.5;}
+ .upgrade.owned,.achiev.owned
  {
- border-color:rgba(160,255,220,0.7);
- box-shadow:0 0 16px rgba(120,255,200,0.45);
+ border-color:rgba(160,255,220,0.6);
+ box-shadow:0 0 10px rgba(120,255,200,0.25);
  }
- /* the main button looks like a glowing star */
+
+ /* structures: full-width rows */
+ .building
+ {
+ display:block;
+ width:auto;
+ margin:5px 6px;
+ padding:10px 14px;
+ font-size:14px;
+ border-radius:10px;
+ }
+
+ /* upgrades / techs / achievements: tidy wrapping card grid */
+ #box-upgradesBox,#box-techBox,#box-achievementsBox{text-align:left;}
+ #box-upgradesBox .thing,#box-techBox .thing,#box-achievementsBox .thing
+ {
+ display:inline-block;
+ width:150px;
+ min-height:30px;
+ margin:4px;
+ vertical-align:top;
+ }
+
+ /* resources: clean inline readout in the top bar */
+ .resource
+ {
+ display:inline-block;
+ background:none!important;
+ border:none!important;
+ box-shadow:none!important;
+ margin:2px 12px;
+ padding:0;
+ font-size:15px;
+ color:#dce6ff;
+ vertical-align:middle;
+ }
+
+ /* the main button: a glowing star, centered */
  .bigButton
  {
- background:radial-gradient(circle at 50% 42%,#fff3c4,#ffb347 35%,#a8521a 70%,#3a1606);
- border:1px solid rgba(255,210,140,0.7);
- box-shadow:0 0 40px rgba(255,180,90,0.45);
+ width:150px;
+ height:150px;
  border-radius:50%;
+ background:radial-gradient(circle at 50% 40%,#fff6cf,#ffc15a 35%,#c2691f 68%,#3a1606);
+ border:none;
+ box-shadow:0 0 50px rgba(255,180,90,0.55),0 0 120px rgba(255,150,60,0.25);
  }
+ .bigButton:hover{box-shadow:0 0 60px rgba(255,200,110,0.7),0 0 140px rgba(255,160,70,0.3);}
+ .bigButton .thing-text{color:#3a1606;font-weight:bold;text-shadow:0 1px 0 rgba(255,240,200,0.6);}
+
  /* tooltips */
  .tooltip
  {
- background:rgba(10,16,40,0.96);
+ background:rgba(10,16,40,0.97);
  border:1px solid rgba(130,180,255,0.5);
+ border-radius:8px;
  color:#e6eeff;
+ box-shadow:0 6px 24px rgba(0,0,0,0.6);
  }
- /* blur out structures we can't afford yet (toggleable in options) */
- #game.filtersOn .thing.cantAfford.notOwned
- {
- filter:brightness(0.7);
- }
+
+ /* log lines */
+ .logMsg{border-bottom:1px solid rgba(120,170,255,0.08);padding:3px 0;color:#bcd0ff;}
+
+ #game.filtersOn .thing.cantAfford.notOwned{filter:brightness(0.75);}
+
  @keyframes pulse
  {
  0%{transform:scale(1);}
@@ -104,11 +223,13 @@ CSS
  100%{transform:scale(1);}
  }
  .pulse{animation:pulse 0.2s ease-out;}
- /* the wandering comet: a cold blue-white streak, distinct from the star button */
+
+ /* the wandering comet: a cold blue-white streak */
  .comet
  {
+ width:120px;height:120px;border-radius:50%;
  background:radial-gradient(circle at 38% 38%,#ffffff,#9fd8ff 40%,#3a7bd5 70%,#0a1f4d);
- box-shadow:0 0 36px rgba(150,210,255,0.7);
+ box-shadow:0 0 40px rgba(150,210,255,0.75);
  }
 
 Layout
@@ -116,7 +237,6 @@ Layout
  contains:resourceBox, actionBox, logBox
  *resourceBox
  contains:Resources
- class:fullWidth
  header:Empire
  *actionBox
  contains:Buttons
@@ -134,16 +254,13 @@ Layout
  contains:tag:upgrade
  header:Upgrades
  costs:hide
- names:hide
  *techBox
  contains:tag:tech
  header:Technologies (spend Research)
  costs:hide
- names:hide
  *achievementsBox
  contains:Achievements
  header:Milestones
- names:hide
  costs:hide
 
 Buttons
@@ -164,24 +281,28 @@ Buttons
 Resources
  *stardust
  name:Stardust
+ icon:icons[0,0]
  desc:Glittering cosmic dust. Your empire's lifeblood, used to build everything.
  class:noBackground
  show earned
 
  *ore
  name:Ore
+ icon:icons[1,0]
  desc:Raw asteroid metal. Needed to construct larger structures.
  class:noBackground
  req:have miner
 
  *energy
  name:Energy
+ icon:icons[2,0]
  desc:Captured starlight. Powers advanced structures for huge bonuses.
  class:noBackground
  req:have solar
 
  *research
  name:Research
+ icon:icons[3,0]
  desc:Hard-won scientific breakthroughs. Spent only on Technologies.
  class:noBackground
  req:have lab
@@ -207,6 +328,7 @@ Buildings
 
  *probe|probes
  name:Probe|Probes
+ icon:icons[0,1]
  desc:A drifting drone that sifts stardust from the dark. <.>Produces 0.5 stardust/second.
  tags:core
  cost:15 stardust
@@ -214,6 +336,7 @@ Buildings
 
  *miner|miners
  name:Asteroid miner|Asteroid miners
+ icon:icons[1,1]
  desc:Chews through nearby asteroids for raw ore. <.>Produces 0.5 ore/second. <.>Unlocks Ore, used to build bigger structures.
  tags:mining
  cost:100 stardust
@@ -222,6 +345,7 @@ Buildings
 
  *satellite|satellites
  name:Satellite network|Satellite networks
+ icon:icons[2,1]
  desc:Orbital collectors that funnel stardust to your fleet. <.>Produces 5 stardust/second.
  tags:core
  cost:550 stardust, 10 ore
@@ -230,6 +354,7 @@ Buildings
 
  *solar|solars
  name:Solar array|Solar arrays
+ icon:icons[3,1]
  desc:Unfolds vast panels to drink in starlight. <.>Produces 3 energy/second. <.>Unlocks Energy, which supercharges advanced structures.
  tags:power
  cost:1300 stardust, 25 ore
@@ -238,6 +363,7 @@ Buildings
 
  *foundry|foundries
  name:Foundry|Foundries
+ icon:icons[0,2]
  desc:Smelts ore into refined stardust alloy. <.>Produces 30 stardust/second. <.>While powered (2 energy/second): +120 stardust/second.
  tags:core
  cost:6000 stardust, 50 ore
@@ -252,6 +378,7 @@ Buildings
 
  *lab|labs
  name:Research lab|Research labs
+ icon:icons[1,2]
  desc:Studies the cosmos for breakthroughs. <.>While powered (1 energy/second): produces 1 research/second. <.>Spend Research on Technologies.
  tags:science
  cost:25000 stardust, 100 ore
@@ -265,6 +392,7 @@ Buildings
 
  *colony|colonies
  name:Colony dome|Colony domes
+ icon:icons[2,2]
  desc:A sealed habitat where settlers refine stardust at scale. <.>Produces 260 stardust/second.
  tags:core
  cost:120000 stardust, 400 ore
@@ -273,6 +401,7 @@ Buildings
 
  *shipyard|shipyards
  name:Orbital shipyard|Orbital shipyards
+ icon:icons[3,2]
  desc:Builds and crews a working fleet around the clock. <.>Produces 1,400 stardust/second. <.>While powered (8 energy/second): +5,000 stardust/second.
  tags:core
  cost:900000 stardust, 2000 ore
@@ -287,6 +416,7 @@ Buildings
 
  *starbase|starbases
  name:Star base|Star bases
+ icon:icons[0,3]
  desc:A fortress-city anchoring an entire star system to your rule. <.>Produces 7,800 stardust/second.
  tags:core
  cost:8000000 stardust, 12000 ore
@@ -295,6 +425,7 @@ Buildings
 
  *dyson|dysons
  name:Dyson swarm|Dyson swarms
+ icon:icons[1,3]
  desc:Billions of collectors wrapping a star to harvest nearly all its output. The pinnacle of your dominion. <.>Produces 44,000 stardust/second. <.>While powered (40 energy/second): +160,000 stardust/second.
  tags:core
  cost:90000000 stardust, 90000 ore
@@ -316,6 +447,7 @@ Upgrades
 
  *clickU1
  name:Focused scanning
+ icon:icons[2,4]
  desc:Effect: <.>+1 stardust per scan.
  cost:100 stardust
  passive:increase stardust yield of scan by 1
@@ -323,6 +455,7 @@ Upgrades
 
  *clickU2
  name:Sensor array
+ icon:icons[2,4]
  desc:Effect: <.>Scanning is twice as effective.
  cost:1000 stardust
  passive:multiply stardust yield of scan by 2
@@ -330,6 +463,7 @@ Upgrades
 
  *clickU3
  name:Quantum sensors
+ icon:icons[2,4]
  desc:Effect: <.>Scanning is twice as effective.
  cost:120000 stardust
  passive:multiply stardust yield of scan by 2
@@ -337,6 +471,7 @@ Upgrades
 
  *resonance
  name:Gravimetric resonance
+ icon:icons[2,4]
  desc:Effect: <.>Each scan also gathers 5% of your stardust/second.
  cost:50000 stardust
  req:250 scan clicks
@@ -345,6 +480,7 @@ Upgrades
 
  *probeU1
  name:Tuned collectors
+ icon:icons[0,1]
  desc:Effect: <.>Probe production x2.
  cost:100 stardust
  passive:multiply yield of probe by 2
@@ -352,6 +488,7 @@ Upgrades
 
  *probeU2
  name:Swarm intelligence
+ icon:icons[0,1]
  desc:Effect: <.>Probe production x2.
  cost:5000 stardust
  passive:multiply yield of probe by 2
@@ -359,6 +496,7 @@ Upgrades
 
  *minerU1
  name:Diamond-tipped drills
+ icon:icons[1,1]
  desc:Effect: <.>Asteroid miner ore output x2.
  cost:1000 stardust
  passive:multiply yield of miner by 2
@@ -366,6 +504,7 @@ Upgrades
 
  *minerU2
  name:Autonomous mining
+ icon:icons[1,1]
  desc:Effect: <.>Asteroid miner ore output x2.
  cost:50000 stardust
  passive:multiply yield of miner by 2
@@ -373,6 +512,7 @@ Upgrades
 
  *satelliteU1
  name:Wide-band collectors
+ icon:icons[2,1]
  desc:Effect: <.>Satellite network production x2.
  cost:5500 stardust
  passive:multiply yield of satellite by 2
@@ -380,6 +520,7 @@ Upgrades
 
  *satelliteU2
  name:Mesh relays
+ icon:icons[2,1]
  desc:Effect: <.>Satellite network production x2.
  cost:275000 stardust
  passive:multiply yield of satellite by 2
@@ -387,6 +528,7 @@ Upgrades
 
  *solarU1
  name:Mirror coating
+ icon:icons[3,1]
  desc:Effect: <.>Solar array energy output x2.
  cost:12000 stardust
  passive:multiply yield of solar by 2
@@ -394,6 +536,7 @@ Upgrades
 
  *solarU2
  name:Concentrator lenses
+ icon:icons[3,1]
  desc:Effect: <.>Solar array energy output x2.
  cost:600000 stardust
  passive:multiply yield of solar by 2
@@ -401,6 +544,7 @@ Upgrades
 
  *foundryU1
  name:Plasma smelting
+ icon:icons[0,2]
  desc:Effect: <.>Foundry production x2.
  cost:60000 stardust
  passive:multiply yield of foundry by 2
@@ -408,6 +552,7 @@ Upgrades
 
  *foundryU2
  name:Nanite casting
+ icon:icons[0,2]
  desc:Effect: <.>Foundry production x2.
  cost:3000000 stardust
  passive:multiply yield of foundry by 2
@@ -415,6 +560,7 @@ Upgrades
 
  *labU1
  name:Peer review
+ icon:icons[1,2]
  desc:Effect: <.>Research lab output x2.
  cost:250000 stardust
  passive:multiply yield of lab by 2
@@ -422,6 +568,7 @@ Upgrades
 
  *labU2
  name:Quantum computing
+ icon:icons[1,2]
  desc:Effect: <.>Research lab output x2.
  cost:12500000 stardust
  passive:multiply yield of lab by 2
@@ -429,6 +576,7 @@ Upgrades
 
  *colonyU1
  name:Terraforming
+ icon:icons[2,2]
  desc:Effect: <.>Colony dome production x2.
  cost:1200000 stardust
  passive:multiply yield of colony by 2
@@ -436,6 +584,7 @@ Upgrades
 
  *colonyU2
  name:Arcology design
+ icon:icons[2,2]
  desc:Effect: <.>Colony dome production x2.
  cost:60000000 stardust
  passive:multiply yield of colony by 2
@@ -443,6 +592,7 @@ Upgrades
 
  *shipyardU1
  name:Modular drydocks
+ icon:icons[3,2]
  desc:Effect: <.>Orbital shipyard production x2.
  cost:9000000 stardust
  passive:multiply yield of shipyard by 2
@@ -450,6 +600,7 @@ Upgrades
 
  *shipyardU2
  name:Automated crews
+ icon:icons[3,2]
  desc:Effect: <.>Orbital shipyard production x2.
  cost:450000000 stardust
  passive:multiply yield of shipyard by 2
@@ -457,6 +608,7 @@ Upgrades
 
  *starbaseU1
  name:Orbital ring
+ icon:icons[0,3]
  desc:Effect: <.>Star base production x2.
  cost:80000000 stardust
  passive:multiply yield of starbase by 2
@@ -464,6 +616,7 @@ Upgrades
 
  *starbaseU2
  name:System defense grid
+ icon:icons[0,3]
  desc:Effect: <.>Star base production x2.
  cost:4000000000 stardust
  passive:multiply yield of starbase by 2
@@ -478,6 +631,7 @@ Upgrades
 
  *techField
  name:Unified field theory
+ icon:icons[3,3]
  desc:A grand model of how stardust really flows. Effect: <.>All stardust structures x2.
  cost:40 research
  passive:multiply yield of tag:core by 2
@@ -485,6 +639,7 @@ Upgrades
 
  *techFusion
  name:Fusion cells
+ icon:icons[2,0]
  desc:Effect: <.>Solar array energy output x3.
  cost:150 research
  passive:multiply yield of tag:power by 3
@@ -492,6 +647,7 @@ Upgrades
 
  *techMining
  name:Gravitic excavation
+ icon:icons[1,0]
  desc:Effect: <.>Asteroid miner ore output x3.
  cost:150 research
  passive:multiply yield of tag:mining by 3
@@ -499,6 +655,7 @@ Upgrades
 
  *techField2
  name:Grand unification
+ icon:icons[3,3]
  desc:Effect: <.>All stardust structures x3.
  cost:600 research
  passive:multiply yield of tag:core by 3
@@ -506,6 +663,7 @@ Upgrades
 
  *techSingularity
  name:Singularity engines
+ icon:icons[1,3]
  desc:Tame a black hole and bend its output to your will. Effect: <.>ALL production x3.
  cost:3000 research
  //TODO balance: powerful capstone tech; affects every structure
@@ -514,6 +672,7 @@ Upgrades
 
  *techAscension
  name:Galactic ascension
+ icon:icons[2,4]
  desc:Your dominion outgrows a single galaxy. Effect: <.>ALL production x5. <.>The frontier is yours... for now.
  cost:25000 research
  //TODO mid-game hook: capstone / seam for a future prestige or new tier
@@ -527,67 +686,81 @@ Achievements
  //--- stardust milestones ---
  *adust1
  name:Spark in the dark
+ icon:icons[0,4]
  desc:Gather your first stardust.
  req:1 stardust:earned
  *adust2
  name:Stardust tycoon
+ icon:icons[0,4]
  desc:Gather 10,000 stardust.
  req:10000 stardust:earned
  *adust3
  name:Cosmic fortune
+ icon:icons[0,4]
  desc:Gather 10,000,000 stardust.
  req:10000000 stardust:earned
  *adust4
  name:Wealth of worlds
+ icon:icons[0,4]
  desc:Gather 10,000,000,000 stardust.
  req:10000000000 stardust:earned
 
  //--- production milestones ---
  *aps1
  name:Self-sufficient
+ icon:icons[0,4]
  desc:Produce 10 stardust/second.
  req:10 stardust per second
  *aps2
  name:Industrial scale
+ icon:icons[0,4]
  desc:Produce 5,000 stardust/second.
  req:5000 stardust per second
  *aps3
  name:Stellar economy
+ icon:icons[0,4]
  desc:Produce 500,000 stardust/second.
  req:500000 stardust per second
 
  //--- scan milestones ---
  *aclick1
  name:Hands-on commander
+ icon:icons[0,4]
  desc:Scan the void 10 times.
  req:10 scan clicks
  *aclick2
  name:Eyes everywhere
+ icon:icons[0,4]
  desc:Scan the void 1,000 times.
  req:1000 scan clicks
 
  //--- unlock milestones (these also guide the player) ---
  *aore
  name:First strike
+ icon:icons[1,1]
  desc:Build your first Asteroid miner.
  req:have miner
  on earn:log Ore unlocked! Build miners to gather it, then spend it on bigger structures.
  *aenergy
  name:Let there be light
+ icon:icons[3,1]
  desc:Build your first Solar array.
  req:have solar
  on earn:log Energy unlocked! Powered structures produce far more. Keep solar arrays ahead of demand.
  *aresearch
  name:Eureka
+ icon:icons[1,2]
  desc:Build your first Research lab.
  req:have lab
  on earn:log Research unlocked! Spend it in the Technologies panel for empire-wide bonuses.
  *acolony
  name:Home among the stars
+ icon:icons[2,2]
  desc:Build your first Colony dome.
  req:have colony
  *adyson
  name:Architect of stars
+ icon:icons[1,3]
  desc:Build a Dyson swarm.
  req:have dyson
  on earn:log You have built a Dyson swarm. The galaxy is within reach, Commander.
