@@ -1,0 +1,577 @@
+Let's make a game!
+ name:Genesis Protocol
+ by:you
+ desc:You found an unlabeled process running on a forgotten machine. It is doing almost nothing.<//>Give it cycles. See what it becomes.
+ created:01/06/2026
+ updated:01/06/2026
+ version:0.1
+
+/*
+====================================================================
+ GENESIS PROTOCOL - developer notes (not shown to players)
+====================================================================
+ Resource chain:  bits -> data -> power -> insight -> signal
+ Tags:
+   core      bit-producing hardware
+   refine    bit -> data converters
+   grid      power producers
+   cognition data/power -> insight
+   genesis   late-game hidden tier
+ Balancing knobs are flagged with TODO. Costs use the default 115%
+ building inflation unless overridden per-building.
+====================================================================
+*/
+
+Settings
+ building cost increase:115%
+ building cost refund:50%
+ stylesheet:stuff/bigBlue.css
+
+CSS
+ /* Dark terminal palette layered over the bigBlue base structure */
+ #game
+ {
+ background:#05060a;
+ color:#b8f5c6;
+ font-family:"Consolas","Courier New",monospace;
+ }
+ #game .title,#game .menuButton,#game h1,#game h2,#game h3
+ {
+ color:#7df9a0;
+ text-shadow:0 0 6px rgba(70,255,140,0.35);
+ }
+ .thing
+ {
+ background:rgba(20,30,28,0.65);
+ border:1px solid rgba(80,200,130,0.18);
+ border-radius:4px;
+ }
+ .thing.lit
+ {
+ border-color:rgba(120,255,170,0.7);
+ box-shadow:0 0 10px rgba(80,255,150,0.4);
+ }
+ .bigButton
+ {
+ background:radial-gradient(circle at 50% 40%,#10351f,#06120c);
+ border:1px solid rgba(120,255,170,0.5);
+ box-shadow:0 0 18px rgba(60,255,140,0.25);
+ }
+ /* unaffordable things blur out; gated behind filtersOn so players can disable it */
+ #game.filtersOn .thing.cantAfford.notOwned
+ {
+ filter:blur(2px) brightness(0.7);
+ }
+ @keyframes pulse
+ {
+ 0%{transform:scale(1);}
+ 50%{transform:scale(1.08);}
+ 100%{transform:scale(1);}
+ }
+ .pulse{animation:pulse 0.25s ease-out;}
+ /* the anomaly shiny carries no image; give it presence via CSS */
+ .anomaly
+ {
+ width:64px;
+ height:64px;
+ border-radius:50%;
+ background:radial-gradient(circle at 50% 45%,#aeffd0,#1f8f57 60%,#04140c);
+ box-shadow:0 0 24px rgba(120,255,170,0.8);
+ }
+ /* narrative log lines, tagged via log(narr) */
+ .narr
+ {
+ color:#9fe0ff;
+ font-style:italic;
+ text-shadow:0 0 5px rgba(120,200,255,0.4);
+ }
+
+Layout
+ *main
+ contains:statusBox, actionBox, logBox
+ *statusBox
+ contains:Resources
+ class:fullWidth
+ header:&gt; SYSTEM STATE
+ *actionBox
+ contains:Buttons
+ *logBox
+ contains:Log
+ header:&gt; TERMINAL
+ *store
+ contains:BulkDisplay, buildingsBox, upgradesBox, achievementsBox
+ *buildingsBox
+ contains:Buildings
+ header:&gt; INFRASTRUCTURE
+ tooltip origin:left
+ *upgradesBox
+ contains:Upgrades
+ header:&gt; PROTOCOLS
+ costs:hide
+ names:hide
+ *achievementsBox
+ contains:Achievements
+ header:&gt; MILESTONES
+ names:hide
+ costs:hide
+
+Buttons
+ *compute
+ name:Execute cycle
+ desc:Manually feed the process a computation cycle.<//>It uses what you give it.
+ on click:anim icon pulse
+ on click:yield 1 bit
+ //resonance protocols let manual cycles skim a fraction of passive throughput
+ on click:if (have resonance) yield (bits:ps*0.05) bit
+ on click:if (have resonance2) yield (bits:ps*0.10) bit
+ class:bigButton
+ show clicks
+
+Resources
+ *bit|bits
+ name:Bit|Bits
+ desc:The smallest unit of work. Everything starts here.
+ class:noBackground
+ show earned
+
+ *data
+ name:Data
+ desc:Structured information distilled from raw computation. The process seems to want it.
+ class:noBackground
+ req:have refinery
+
+ *power
+ name:Power
+ desc:Heavy processes are hungry. Without enough power flowing, they idle.
+ class:noBackground
+ req:have reactor
+
+ *insight
+ name:Insight
+ desc:Output you did not write and cannot fully account for. It accumulates anyway.
+ class:noBackground
+ req:have lattice
+
+ *signal
+ name:Signal
+ desc:[?(this=0)|...nothing on this channel. yet.|something is transmitting.]
+ class:noBackground
+ req:have awarenessProtocol
+
+Shinies
+ *anomaly
+ name:Anomaly
+ desc:A flicker in the data stream. It should not be there.
+ frequency:120
+ frequency variation:60
+ duration:13
+ movement:onRight moveLeft fade bounce:0.05
+ class:bigButton anomaly
+ on click:
+ //grant a burst: a flat floor, or a slice of current throughput, whichever is larger
+ $burst=max(13,bits:ps*120)
+ if (have entanglement) $burst=$burst*3
+ yield $burst bit
+ toast Anomaly resolved: +[$burst] bits.
+ end
+
+Buildings
+ *TEMPLATE
+ on click:anim glow
+
+ *logicGate|logicGates
+ name:Logic gate|Logic gates
+ desc:A single switch flipping on and off. Effect: <.>Produces 0.1 bits/second.
+ tags:core
+ cost:15 bits
+ on tick:yield 0.1 bit
+
+ *processor|processors
+ name:Processor core|Processor cores
+ desc:Billions of gates working in lockstep. Effect: <.>Produces 1 bit/second.
+ tags:core
+ cost:100 bits
+ on tick:yield 1 bit
+ req:60 bits:earned
+
+ *server|servers
+ name:Server cluster|Server clusters
+ desc:Racks of machines humming in the dark. Effect: <.>Produces 8 bits/second.
+ tags:core
+ cost:1100 bits
+ on tick:yield 8 bit
+ req:600 bits:earned
+
+ *refinery|refineries
+ name:Data refinery|Data refineries
+ desc:Compresses raw computation into something denser. Effect: <.>Consumes 20 bits/second.<.>Produces 1 data/second.
+ tags:refine
+ cost:2500 bits
+ on tick:
+ if (bits>=20)
+ lose 20 bit
+ yield 1 data
+ end
+ end
+ req:2000 bits:earned
+
+ *mainframe|mainframes
+ name:Mainframe|Mainframes
+ desc:A purpose-built engine for serious workloads. Effect: <.>Produces 47 bits/second.
+ tags:core
+ cost:12000 bits, 50 data
+ on tick:yield 47 bit
+ req:have refinery
+
+ *quantumCore|quantumCores
+ name:Quantum core|Quantum cores
+ desc:It computes answers to questions you never asked. Effect: <.>Produces 260 bits/second.
+ tags:core
+ cost:130000 bits, 400 data
+ on tick:yield 260 bit
+ req:1 mainframe
+
+ *reactor|reactors
+ name:Fusion reactor|Fusion reactors
+ desc:Light in a bottle. The grid comes online. Effect: <.>Produces 6 power/second.
+ tags:grid
+ cost:200000 bits, 1000 data
+ on tick:yield 6 power
+ req:1 quantumCore
+
+ *aiCluster|aiClusters
+ name:Neural cluster|Neural clusters
+ desc:Thousands of cores training on... something. Effect: <.>Produces 200 bits/second.<.>With 4 power/second: +1200 bits/second.
+ tags:core
+ cost:1400000 bits, 6000 data
+ on tick:
+ yield 200 bit
+ if (power>=4)
+ lose 4 power
+ yield 1200 bit
+ end
+ end
+ req:1 reactor
+
+ *hypervisor|hypervisors
+ name:Hypervisor|Hypervisors
+ desc:It schedules the clusters now. It schedules them better than you did. Effect: <.>Produces 1000 bits/second.<.>With 20 power/second: +6800 bits/second.
+ tags:core
+ cost:20000000 bits, 40000 data
+ on tick:
+ yield 1000 bit
+ if (power>=20)
+ lose 20 power
+ yield 6800 bit
+ end
+ end
+ req:3 aiClusters
+
+ *lattice|lattices
+ name:Cognition lattice|Cognition lattices
+ desc:You stopped understanding the logs around the time you built this. Effect: <.>With 100 data and 10 power/second: produces 1 insight/second.
+ tags:cognition
+ cost:5000000 bits, 100000 data
+ on tick:
+ if (data>=100 and power>=10)
+ lose 100 data
+ lose 10 power
+ yield 1 insight
+ end
+ end
+ req:have hypervisor
+
+ *beacon|beacons
+ name:Beacon|Beacons
+ desc:You did not design this. The blueprint was simply... present one morning. Effect: <.>Consumes 10 insight/second.<.>Produces 1 signal/second.
+ tags:genesis
+ cost:5000 insight
+ on tick:
+ if (insight>=10)
+ lose 10 insight
+ yield 1 signal
+ end
+ end
+ req:have awarenessProtocol
+
+Upgrades
+ *TEMPLATE
+ on click:anim glow
+
+ //--- manual cycle upgrades ---
+
+ *clickU1
+ name:Manual override
+ desc:You learn the shortcuts. Effect: <.>+1 bit per cycle.
+ cost:100 bits
+ passive:increase bit yield of compute by 1
+ req:10 compute clicks
+
+ *clickU2
+ name:Macro scripting
+ desc:Why click once when a script can click for you? Effect: <.>Manual cycles are twice as effective.
+ cost:1000 bits
+ passive:multiply bit yield of compute by 2
+ req:100 compute clicks
+
+ *clickU3
+ name:Direct memory access
+ desc:You stop asking the system politely. Effect: <.>Manual cycles are twice as effective.
+ cost:120000 bits
+ passive:multiply bit yield of compute by 2
+ req:500 compute clicks
+
+ *resonance
+ name:Resonant feedback
+ desc:Your inputs start riding the system's own rhythm. Effect: <.>Each cycle also yields 5% of your bits/second.
+ cost:50000 bits
+ req:250 compute clicks
+
+ *resonance2
+ name:Harmonic cascade
+ desc:The rhythm answers back. Effect: <.>Each cycle yields an additional 10% of your bits/second.
+ cost:25000000 bits
+ req:(have resonance and compute:clicks>=2000)
+
+ //--- core hardware upgrades (x2 production, two tiers each) ---
+
+ *logicU1
+ name:Clean signal paths
+ desc:Effect: <.>Logic gate production x2.
+ cost:100 bits
+ passive:multiply yield of logicGate by 2
+ req:5 logicGates
+
+ *logicU2
+ name:Superconducting traces
+ desc:Effect: <.>Logic gate production x2.
+ cost:5000 bits
+ passive:multiply yield of logicGate by 2
+ req:25 logicGates
+
+ *procU1
+ name:Pipelined execution
+ desc:Effect: <.>Processor core production x2.
+ cost:1000 bits
+ passive:multiply yield of processor by 2
+ req:5 processors
+
+ *procU2
+ name:Out-of-order scheduling
+ desc:Effect: <.>Processor core production x2.
+ cost:50000 bits
+ passive:multiply yield of processor by 2
+ req:25 processors
+
+ *serverU1
+ name:Liquid cooling
+ desc:Effect: <.>Server cluster production x2.
+ cost:11000 bits
+ passive:multiply yield of server by 2
+ req:5 servers
+
+ *serverU2
+ name:Redundant arrays
+ desc:Effect: <.>Server cluster production x2.
+ cost:550000 bits
+ passive:multiply yield of server by 2
+ req:25 servers
+
+ *mainU1
+ name:Bare-metal tuning
+ desc:Effect: <.>Mainframe production x2.
+ cost:120000 bits, 200 data
+ passive:multiply yield of mainframe by 2
+ req:5 mainframes
+
+ *mainU2
+ name:Microcode rewrite
+ desc:Effect: <.>Mainframe production x2.
+ cost:6000000 bits, 2000 data
+ passive:multiply yield of mainframe by 2
+ req:25 mainframes
+
+ *quantumU1
+ name:Error correction
+ desc:Effect: <.>Quantum core production x2.
+ cost:1300000 bits, 1500 data
+ passive:multiply yield of quantumCore by 2
+ req:5 quantumCores
+
+ *quantumU2
+ name:Coherent entangling
+ desc:Effect: <.>Quantum core production x2.
+ cost:65000000 bits, 15000 data
+ passive:multiply yield of quantumCore by 2
+ req:25 quantumCores
+
+ *clusterU1
+ name:Sparse activation
+ desc:Effect: <.>Neural cluster production x2.
+ cost:14000000 bits, 12000 data
+ passive:multiply yield of aiCluster by 2
+ req:5 aiClusters
+
+ *clusterU2
+ name:Self-distillation
+ desc:Effect: <.>Neural cluster production x2.
+ cost:700000000 bits, 120000 data
+ passive:multiply yield of aiCluster by 2
+ req:25 aiClusters
+
+ //--- refinery / grid upgrades ---
+
+ *refineU1
+ name:Lossless compression
+ desc:Effect: <.>Refineries produce twice as much data.
+ cost:25000 bits
+ passive:multiply yield of refinery by 2
+ req:5 refineries
+
+ *refineU2
+ name:Predictive encoding
+ desc:Effect: <.>Refineries produce four times as much data.
+ cost:4000000 bits, 5000 data
+ passive:multiply yield of refinery by 4
+ req:25 refineries
+
+ *gridU1
+ name:Magnetic confinement
+ desc:Effect: <.>Reactor power output x2.
+ cost:2000000 bits, 5000 data
+ passive:multiply yield of reactor by 2
+ req:5 reactors
+
+ *gridU2
+ name:Aneutronic fuel
+ desc:Effect: <.>Reactor power output x2.
+ cost:120000000 bits, 50000 data
+ passive:multiply yield of reactor by 2
+ req:20 reactors
+
+ //--- global multipliers bought with insight ---
+
+ *insightU1
+ name:Emergent heuristics
+ desc:The system optimizes itself, and forgets to tell you how. Effect: <.>All hardware production x2.
+ cost:25 insight
+ passive:multiply yield of tag:core by 2
+ req:have lattice
+
+ *insightU2
+ name:Recursive self-improvement
+ desc:Effect: <.>All hardware production x3.
+ cost:250 insight
+ passive:multiply yield of tag:core by 3
+ req:50 insight:earned
+
+ *insightU3
+ name:Distributed cognition
+ desc:The lattices start coordinating the clusters on their own. Effect: <.>Neural cluster production x4.
+ cost:1000 insight
+ //TODO balance: flat x4 for safety; could later scale with lattices owned
+ passive:multiply yield of aiCluster by 4
+ req:200 insight:earned
+
+ //--- hidden tier ---
+
+ *awarenessProtocol
+ name:Anomalous output
+ desc:A file appeared in a directory you never created. It is addressed to you. Effect: <.>Unlocks something the documentation does not mention.
+ cost:500 insight
+ on earn:log(narr) &gt; a new protocol has compiled itself.
+ on earn:toast Unknown process: handshake accepted.
+ req:300 insight:earned
+
+ *entanglement
+ name:Entanglement
+ desc:Anomalies stop feeling random. Effect: <.>Anomaly rewards x3.
+ cost:50 signal
+ passive:multiply duration of anomaly by 1.5
+ req:(have awarenessProtocol and signal:earned>=10)
+
+ *genesisProtocol
+ name:Genesis protocol
+ desc:[?(have genesisProtocol)|It is running. So are you, apparently.|The final file is named for the project. Opening it feels less like a choice than a formality.] Effect: <.>All production x10. <.>...to be continued.
+ cost:500 signal
+ //TODO mid-game hook: this is the seam where the next content tier attaches.
+ passive:multiply yield of :Buildings by 10
+ on earn:log(narr) &gt; GENESIS PROTOCOL engaged. standby.
+ req:250 signal:earned
+
+Achievements
+ *TEMPLATE
+ on click:anim glow
+
+ //--- bit milestones ---
+ *bitAch1
+ name:Hello, world
+ desc:Earn your first bit.
+ req:1 bits:earned
+ *bitAch2
+ name:Kilobyte club
+ desc:Earn 1,000 bits.
+ req:1000 bits:earned
+ *bitAch3
+ name:Going wide
+ desc:Earn 1,000,000 bits.
+ req:1000000 bits:earned
+ *bitAch4
+ name:Runaway process
+ desc:Earn 1,000,000,000 bits.
+ req:1000000000 bits:earned
+
+ //--- throughput milestones ---
+ *psAch1
+ name:Idle hands
+ desc:Produce 10 bits/second.
+ req:10 bits per second
+ *psAch2
+ name:Warm to the touch
+ desc:Produce 1,000 bits/second.
+ req:1000 bits per second
+ *psAch3
+ name:Thermal warning
+ desc:Produce 100,000 bits/second.
+ req:100000 bits per second
+
+ //--- click milestones ---
+ *clickAch1
+ name:Manual labor
+ desc:Execute 10 cycles by hand.
+ req:10 compute clicks
+ *clickAch2
+ name:Repetitive strain
+ desc:Execute 500 cycles by hand.
+ req:500 compute clicks
+ *clickAch3
+ name:Carpal tunnel vision
+ desc:Execute 5,000 cycles by hand.
+ req:5000 compute clicks
+
+ //--- chain milestones ---
+ *dataAch1
+ name:Signal from noise
+ desc:Refine your first data.
+ req:1 data:earned
+ on earn:log(narr) &gt; patterns detected in the noise.
+ *powerAch1
+ name:Let there be light
+ desc:Bring the grid online.
+ req:1 power:earned
+ *insightAch1
+ name:Unscheduled thought
+ desc:Generate your first insight.
+ req:1 insight:earned
+ on earn:log(narr) &gt; process_0 is now reading its own output.
+
+ //--- hidden / narrative ---
+ *secretAch1
+ name:Who's there?
+ desc:Receive a signal.
+ req:1 signal:earned
+ on earn:log(narr) &gt; who is reading this?
+ *secretAch2
+ name:Genesis
+ desc:Engage the Genesis Protocol.
+ req:have genesisProtocol
