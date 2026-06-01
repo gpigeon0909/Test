@@ -178,7 +178,8 @@ CSS
  }
  #box-upgradesBox .thing:hover,#box-techBox .thing:hover,#box-achievementsBox .thing:hover{border-color:rgba(150,200,255,0.55)!important;box-shadow:0 0 12px rgba(110,170,255,0.25)!important;}
  #box-upgradesBox .thing-text,#box-techBox .thing-text,#box-achievementsBox .thing-text{font-size:11px;color:#dbe6ff;line-height:1.2;}
- .upgrade.owned,.achiev.owned{border-color:rgba(150,255,210,0.55)!important;box-shadow:0 0 10px rgba(120,255,200,0.22)!important;}
+ .upgrade.owned,.achiev.owned{position:relative;background:linear-gradient(rgba(46,160,110,0.42),rgba(22,86,62,0.36))!important;border-color:rgba(120,255,200,0.7)!important;box-shadow:0 0 12px rgba(90,240,180,0.35)!important;}
+ .upgrade.owned::after,.achiev.owned::after{content:"\2713";position:absolute;top:3px;right:5px;font-size:12px;font-weight:700;color:#8dffc6;text-shadow:0 0 6px rgba(40,140,90,0.9);}
  .thing-icon{flex:none;}
 
  /* ===== Tooltips ===== */
@@ -191,6 +192,7 @@ CSS
  {
  width:104px!important;
  height:104px!important;
+ margin:0!important;
  border-radius:50%;
  background:radial-gradient(circle at 38% 38%,#ffffff,#9fd8ff 40%,#3a7bd5 70%,#0a1f4d)!important;
  border:none!important;
